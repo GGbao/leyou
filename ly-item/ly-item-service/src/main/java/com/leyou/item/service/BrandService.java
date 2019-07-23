@@ -63,4 +63,23 @@ public class BrandService {
             }
         }
     }
+
+    @Transactional
+    public void saveEditedBrand(Brand brand, String image) {
+        //修改品牌
+        int count = brandMapper.update(brand.getId(),image);
+        if (count != 1) {
+            throw new LyException(ExceptionEnum.BRAND_EDIT_ERROR);
+        }
+    }
+
+    @Transactional
+    public void deleteBrandById(Long bid) {
+        //删除品牌
+        int count = brandMapper.deleteByPrimaryKey(bid);
+        System.out.println(count);
+        if (count != 1) {
+            throw new LyException(ExceptionEnum.DELETE_BRAND_ERROR);
+        }
+    }
 }
