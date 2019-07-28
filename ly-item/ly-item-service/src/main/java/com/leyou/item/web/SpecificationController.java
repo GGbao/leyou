@@ -18,6 +18,7 @@ public class SpecificationController {
 
     /**
      * 根据分类id查询规格组
+     *
      * @param cid
      * @return
      */
@@ -28,28 +29,37 @@ public class SpecificationController {
     }
 
     /**
-     * 根据组id查询参数
-     * @param gid
+     * 查询参数集合
+     * @param gid 组id
+     * @param cid 分类id
+     * @param searching 是否搜索
      * @return
      */
     @GetMapping("params")
-    public ResponseEntity<List<SpecParam>> queryParamByGid(@RequestParam("gid") Long gid) {
-        return ResponseEntity.ok(specService.queryParamByGid(gid));
+    public ResponseEntity<List<SpecParam>> queryParamList(
+            @RequestParam(value = "gid", required = false) Long gid,
+            @RequestParam(value = "cid", required = false) Long cid,
+            @RequestParam(value = "searching",required = false) Boolean searching
+
+    ) {
+        return ResponseEntity.ok(specService.queryParamList(gid,cid,searching));
     }
 
     /**
      * 修改规格组参数
+     *
      * @param group
      * @return
      */
     @PutMapping("group")
     public ResponseEntity<Void> saveEditedSpecGroup(@RequestBody SpecGroup group) {
-        specService.saveEditedSpecGroup(group.getId(),group.getName());
+        specService.saveEditedSpecGroup(group.getId(), group.getName());
         return ResponseEntity.ok().build();
     }
 
     /**
      * 新增规格组
+     *
      * @param group
      * @return
      */
@@ -61,6 +71,7 @@ public class SpecificationController {
 
     /**
      * 删除规格组
+     *
      * @param id
      * @return
      */
@@ -72,6 +83,7 @@ public class SpecificationController {
 
     /**
      * 编辑参数
+     *
      * @param param
      * @return
      */
@@ -83,6 +95,7 @@ public class SpecificationController {
 
     /**
      * 新增参数
+     *
      * @param param
      * @return
      */
@@ -97,5 +110,6 @@ public class SpecificationController {
         specService.deleteSpecParam(id);
         return ResponseEntity.ok().build();
     }
+
 
 }
