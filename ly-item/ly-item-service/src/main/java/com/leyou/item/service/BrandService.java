@@ -21,7 +21,7 @@ public class BrandService {
     @Autowired
     private BrandMapper brandMapper;
 
-    public PageResult<Brand> queryBrandByPage(Integer page, Integer rows, String sortBy, boolean desc, String key) {
+    public PageResult<Brand> queryBrandByPage(Integer page, Integer rows, String sortBy, Boolean desc, String key) {
         //分页
         PageHelper.startPage(page, rows);
         //过滤

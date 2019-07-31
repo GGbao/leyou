@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.PublicKey;
 import java.util.List;
 
 @RestController
@@ -18,8 +17,10 @@ public class GoodsController {
 
     @Autowired
     private GoodsService goodsService;
+
     /**
      * 分页查询spu
+     *
      * @param page
      * @param rows
      * @param saleable
@@ -39,6 +40,7 @@ public class GoodsController {
 
     /**
      * 商品新增
+     *
      * @param spu
      * @return
      */
@@ -51,6 +53,7 @@ public class GoodsController {
 
     /**
      * 商品修改
+     *
      * @param spu
      * @return
      */
@@ -63,6 +66,7 @@ public class GoodsController {
 
     /**
      * 根据spu的id查询详情detail
+     *
      * @param spuId
      * @return
      */
@@ -74,6 +78,24 @@ public class GoodsController {
     @GetMapping("sku/list")
     public ResponseEntity<List<Sku>> querySkuBySpuId(@RequestParam("id") Long spuId) {
         return ResponseEntity.ok(goodsService.querySkuBySpuId(spuId));
+    }
+
+    @DeleteMapping("/goods/delete/{id}")
+    public ResponseEntity<Void> deleteBySpuId(@PathVariable("id") Long spuId) {
+        goodsService.deleteBySpuId(spuId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/goods/soldout/{id}")
+    public ResponseEntity<Void> soldOutBySpuId(@PathVariable("id") Long spuId) {
+        goodsService.soldOutBySpuId(spuId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/goods/putaway/{id}")
+    public ResponseEntity<Void> putAwayBySpuId(@PathVariable("id") Long spuId) {
+        goodsService.putAwayBySpuId(spuId);
+        return ResponseEntity.ok().build();
     }
 
 

@@ -60,9 +60,9 @@ public class GoodsService {
         //查询
         List<Spu> spus = spuMapper.selectByExample(example);
         //判断
-        if (CollectionUtils.isEmpty(spus)) {
+       /* if (CollectionUtils.isEmpty(spus)) {
             throw new LyException(ExceptionEnum.GOODS_NOT_FOUND);
-        }
+        }*/
         //解析分类和品牌名称
         loadCategoryAndBrandName(spus);
         //解析分页结果
@@ -208,6 +208,51 @@ public class GoodsService {
         //新增sku和stock
         saveSkuAndStock(spu);
 
+    }
+
+    @Transactional
+    public void deleteBySpuId(Long spuId) {
+        //删除spu
+        int count = spuMapper.deleteByPrimaryKey(spuId);
+        if (count != 1) {
+            throw new LyException(ExceptionEnum.GOODS_DELETE_ERROR);
+        }
+        //删除spudetail
+        count = detailMapper.deleteByPrimaryKey(spuId);
+        if (count != 1) {
+            throw new LyException(ExceptionEnum.GOODS_DELETE_ERROR);
+        }
+        //删除sku
+        Sku sku = new Sku();
+        sku.setSpuId(spuId);
+        //查询sku
+        List<Sku> skuList = skuMapper.select(sku);
+        if (!CollectionUtils.isEmpty(skuList)) {
+            //删除sku
+            skuMapper.delete(sku);
+            //删除stock
+            List<Long> ids = skuList.stream().map(Sku::getId).collect(Collectors.toList());
+            stockMapper.deleteByIdList(ids);
+        }
+
+
+    }
+
+    @Transactional
+    public void soldOutBySpuId(Long spuId) {
+        int count = spuMapper.soldOutBySpuId(spuId);
+        if (count != 1) {
+            throw new LyException(ExceptionEnum.GOODS_SOLDOUT_ERROR);
+        }
+
+    }
+    @Transactional
+    public void putAwayBySpuId(Long spuId) {
+
+        int count = spuMapper.putAwayBySpuId(spuId);
+        if (count != 1) {
+            throw new LyException(ExceptionEnum.GOODS_PUTAWAY_ERROR);
+        }
     }
 }
 
