@@ -1,5 +1,6 @@
 package com.leyou.item.api;
 
+import com.leyou.item.pojo.SpecGroup;
 import com.leyou.item.pojo.SpecParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,4 +16,7 @@ public interface SpecificationApi {
             @RequestParam(value = "searching", required = false) Boolean searching
 
     );
+
+    @GetMapping("spec/group")
+    List<SpecGroup> queryListByCid(@RequestParam("cid") Long cid);
 }
