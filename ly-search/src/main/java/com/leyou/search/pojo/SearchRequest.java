@@ -7,6 +7,10 @@ public class SearchRequest {
 
     private Integer page;// 当前页
 
+    private String sortBy;//排序字段
+
+    private Boolean descending;//是否降序
+
     private Map<String, String> filter;
 
     private static final int DEFAULT_SIZE = 20;// 每页大小，不从页面接收，而是固定大小
@@ -38,5 +42,13 @@ public class SearchRequest {
 
     public Integer getSize() {
         return DEFAULT_SIZE;
+    }
+
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public Boolean getDescending() {
+        return descending;
     }
 }
