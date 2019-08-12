@@ -1,5 +1,7 @@
 package com.leyou.item.web;
 
+import com.leyou.common.enums.ExceptionEnum;
+import com.leyou.common.exception.LyException;
 import com.leyou.item.pojo.Category;
 import com.leyou.item.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +51,19 @@ public class CategoryController {
     @GetMapping("list/ids")
     public ResponseEntity<List<Category>> queryCategoryByIds(@RequestParam("ids") List<Long> ids) {
         return ResponseEntity.ok(categoryService.queryByIds(ids));
+    }
+
+    /**
+     * 根据3级分类id，查询1~3级的分类
+     * @param id
+     * @return
+     */
+    @GetMapping("all/level")
+    public ResponseEntity<List<Category>> queryAllByCid3(@RequestParam("id") Long id){
+        List<Category> list = this.categoryService.queryAllByCid3(id);
+        if (list == null || list.size() < 1) {
+            throw new LyException(ExceptionEnum.CATEGORY_NOT_FOUND);
+        }
+        return ResponseEntity.ok(list);
     }
 }
