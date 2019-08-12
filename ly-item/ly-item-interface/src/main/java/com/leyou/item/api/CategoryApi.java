@@ -9,4 +9,7 @@ import java.util.List;
 public interface CategoryApi {
     @GetMapping("category/list/ids")
     List<Category> queryCategoryByIds(@RequestParam("ids") List<Long> ids);
+
+    @GetMapping("category/all/level")
+    List<Category> queryAllByCid3(Long id);
 }
