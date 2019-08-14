@@ -1,0 +1,30 @@
+server:
+  port: 8086
+spring:
+  application:
+    name: sms-service
+  rabbitmq:
+    host: 192.168.126.201
+    username: leyou
+    password: leyou
+    virtual-host: /leyou
+    template:
+      retry:
+        enabled: true
+        initial-interval: 10000ms
+        max-interval: 30000ms
+        multiplier: 2
+      exchange: ly.sms.exchange
+      publisher-confirms: true
+  redis:
+    host: 192.168.126.201
+ly:
+  sms:
+    accessKeyId: LTAIPSsyN8Vj5Rm # 你自己的accessKeyId
+    accessKeySecret: CPBP0IBOswLgA353aAtVvAp5bmFU9H # 你自己的AccessKeySecret
+    signName: 乐优商城 # 签名名称
+    verifyCodeTemplate: SMS_172355723 # 模板名称
+
+  mail:
+    user: 379160943@qq.com #发件人称号，同邮箱地址
+    password: ccwwlczbfyudbhec #如果是qq邮箱可以使户端授权码，或者登录密码
