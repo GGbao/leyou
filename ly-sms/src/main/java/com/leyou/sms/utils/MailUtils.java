@@ -1,16 +1,13 @@
 package com.leyou.sms.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 发邮件工具类
@@ -19,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 @Component
 public final class MailUtils {
     @Autowired
-    private StringRedisTemplate redisTemplate;
     private static final String USER = "379160943@qq.com"; // 发件人称号，同邮箱地址
     private static final String PASSWORD = "ccwwlczbfyudbhec"; // 如果是qq邮箱可以使户端授权码，或者登录密码
 

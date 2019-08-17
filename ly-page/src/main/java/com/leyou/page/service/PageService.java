@@ -64,12 +64,22 @@ public class PageService {
         //输出流
         File dest = new File("/Users/Administrator/IdeaProjects/leyou/upload", spuId + ".html");
         PrintWriter writer = null;
+        if (dest.exists()) {
+            dest.delete();
+        }
         try {
             writer = new PrintWriter(dest, "UTF-8");
             //生成HTML
             templateEngine.process("item", context, writer);
         } catch (Exception e) {
             log.error("[静态页服务] 生成静态页异常", e);
+        }
+    }
+
+    public void deleteHtml(Long spuId) {
+        File dest = new File("/Users/Administrator/IdeaProjects/leyou/upload", spuId + ".html");
+        if (dest.exists()) {
+            dest.delete();
         }
     }
 }

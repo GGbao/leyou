@@ -32,7 +32,12 @@ public enum ExceptionEnum {
     UPLOAD_FILE_ERROR(500, "文件上传失败"),
     INVALID_FILE_TYPE(400, "无效的文件类型"),
     BRAND_EDIT_ERROR(400, "品牌修改失败"),
-    DELETE_BRAND_ERROR(400,"删除品牌失败")
+    DELETE_BRAND_ERROR(400,"删除品牌失败"),
+    INVALID_USER_DATA_TYPE(400,"用户数据类型无效"),
+    INVALID_VERIFY_CODE(400,"无效的验证码"),
+    INVALID_USER_PASSWORD(400,"用户名或密码错误"),
+    CREATE_TOKEN_ERROR(500,"用户凭证生成失败"),
+    UNAUTHORIZED(403,"用户未授权"),
     ;                                                     //此处封号必须的
     private int code;
     private String msg;
