@@ -11,6 +11,7 @@ import com.leyou.order.client.GoodsClient;
 import com.leyou.order.dto.AddressDTO;
 import com.leyou.order.dto.OrderDto;
 import com.leyou.order.enums.OrderStatusEnum;
+import com.leyou.order.enums.PayStateEnum;
 import com.leyou.order.interceptor.UserInterceptor;
 import com.leyou.order.mapper.OrderDetailMapper;
 import com.leyou.order.mapper.OrderMapper;
@@ -18,15 +19,17 @@ import com.leyou.order.mapper.OrderStatusMapper;
 import com.leyou.order.pojo.Order;
 import com.leyou.order.pojo.OrderDetail;
 import com.leyou.order.pojo.OrderStatus;
+import com.leyou.order.utils.PayHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
-import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 public class OrderService {
@@ -40,7 +43,10 @@ public class OrderService {
     private IdWorker idWorker;
     @Autowired
     private GoodsClient goodsClient;
-   @Transactional
+    @Autowired
+    private PayHelper payHelper;
+
+    @Transactional
     public Long creatOrder(OrderDto orderDto) {
         //1新增订单
         Order order = new Order();
@@ -113,15 +119,103 @@ public class OrderService {
         orderStatus.setOrderId(orderId);
         orderStatus.setStatus(OrderStatusEnum.UN_PAY.value());
         count = statusMapper.insertSelective(orderStatus);
-    if (count != 1) {
-        log.error("[创建订单] 创建订单失败，orderId:{}", orderId);
-        throw new LyException(ExceptionEnum.CREATE_ORDER_ERROR);
-    }
+        if (count != 1) {
+            log.error("[创建订单] 创建订单失败，orderId:{}", orderId);
+            throw new LyException(ExceptionEnum.CREATE_ORDER_ERROR);
+        }
         //4减库存
-    List<CartDto> cartDtos = orderDto.getCarts();
-    goodsClient.decreaseStock(cartDtos);
-    log.info("订单号：{}",String.valueOf(orderId));
-    return orderId;
+        List<CartDto> cartDtos = orderDto.getCarts();
+        goodsClient.decreaseStock(cartDtos);
+        log.info("订单号：{}", String.valueOf(orderId));
+        return orderId;
 
-}
+    }
+
+    public Order queryOrderById(Long id) {
+        //查询订单
+        Order order = orderMapper.selectByPrimaryKey(id);
+        if (order == null) {
+            throw new LyException(ExceptionEnum.ORDER_NOT_FOUND);
+        }
+        //查询订单详情
+        OrderDetail detail = new OrderDetail();
+        detail.setOrderId(id);
+        List<OrderDetail> details = detailMapper.select(detail);
+        if (CollectionUtils.isEmpty(details)) {
+            throw new LyException(ExceptionEnum.ORDER_DETAIL_NOT_FOUND);
+        }
+        order.setOrderDetails(details);
+        //查询订单状态
+        OrderStatus orderStatus = statusMapper.selectByPrimaryKey(id);
+        if (orderStatus == null) {
+            throw new LyException(ExceptionEnum.ORDER_STATUS_NOT_FOUND);
+        }
+        order.setOrderStatus(orderStatus);
+
+        return order;
+    }
+
+    public String createPayUrl(Long orderId) {
+        //查询订单
+        Order order = queryOrderById(orderId);
+        //判断订单状态
+        Integer status = order.getOrderStatus().getStatus();
+        if (status != OrderStatusEnum.UN_PAY.value()) {
+            throw new LyException(ExceptionEnum.ORDER_STATUS_ERROR);
+        }
+        //总金额
+        Long actualPay = /*order.getActualPay()*/1l;
+        //商品描述
+        OrderDetail detail = order.getOrderDetails().get(0);
+        String desc = detail.getTitle();
+        return payHelper.createOrder(orderId, actualPay, desc);
+
+
+    }
+
+    public void handleNotify(Map<String, String> result) {
+        //1数据校验
+        payHelper.isSuccess(result);
+        //2校验签名
+        payHelper.isValidSign(result);
+        //3校验金额
+        String totalFeeStr = result.get("total_fee");
+        String tradeNo = result.get("out_trade_no");
+        if (StringUtils.isEmpty(totalFeeStr)||StringUtils.isEmpty(tradeNo)) {
+            throw new LyException(ExceptionEnum.INVALID_ORDER_PARAM);
+        }
+        //3.1获取结果中的金额
+        Long totalFee = Long.valueOf(totalFeeStr);
+        //3.2获取订单金额
+        Long orderId = Long.valueOf(tradeNo);
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        if (totalFee != /*order.getActualPay()*/1) {
+            //金额不符
+            throw new LyException(ExceptionEnum.INVALID_ORDER_PARAM);
+        }
+        //4修改订单状态
+        OrderStatus status = new OrderStatus();
+        status.setStatus(OrderStatusEnum.PAYED.value());
+        status.setOrderId(orderId);
+        status.setPaymentTime(new Date());
+        int count = statusMapper.updateByPrimaryKeySelective(status);
+        if (count != 1) {
+            throw new LyException(ExceptionEnum.UPDATE_ORDER_STATUS_ERROR);
+        }
+        log.info("[订单回调]， 订单支付成功！订单编号：{}", orderId);
+
+    }
+
+    public PayStateEnum queryOrderState(Long orderId) {
+        //查询订单状态
+        OrderStatus orderStatus = statusMapper.selectByPrimaryKey(orderId);
+        Integer status = orderStatus.getStatus();
+        //判断是否支付
+        if (status != OrderStatusEnum.UN_PAY.value()) {
+            //如果已支付，真的是已支付
+            return PayStateEnum.SUCCESS;
+        }
+        //如果未支付，但其实不一定是未支付，必须去微信查询支付状态
+        return payHelper.queryPayState(orderId);
+    }
 }
