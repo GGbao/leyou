@@ -65,9 +65,13 @@ public class BrandService {
     }
 
     @Transactional
-    public void saveEditedBrand(Brand brand, String image) {
+    public void saveEditedBrand(Brand brand) {
         //修改品牌
-        int count = brandMapper.update(brand.getId(),image);
+        Example example = new Example(Brand.class);
+        // where 条件
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id", brand.getId());
+        int count = brandMapper.updateByExampleSelective(brand, example);
         if (count != 1) {
             throw new LyException(ExceptionEnum.BRAND_EDIT_ERROR);
         }

@@ -58,8 +58,8 @@ public class BrandController {
      * @return
      */
     @PutMapping("")
-    public ResponseEntity<Void> saveEditedBrand(Brand brand, @RequestParam("image") String image) {
-        brandService.saveEditedBrand(brand, image);
+    public ResponseEntity<Void> saveEditedBrand(Brand brand) {
+        brandService.saveEditedBrand(brand);
         return ResponseEntity.ok().build();
     }
 
