@@ -23,6 +23,9 @@ public class PageController {
         //准备模型数据
         model.addAllAttributes(attributes);
 
+        // 页面静态化
+//        this.pageService.asyncExcute(spuId);
+
         //返回视图
         return "item";
     }

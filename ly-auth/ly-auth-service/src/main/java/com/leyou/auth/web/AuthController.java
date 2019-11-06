@@ -7,9 +7,6 @@ import com.leyou.auth.utils.JwtUtils;
 import com.leyou.common.enums.ExceptionEnum;
 import com.leyou.common.exception.LyException;
 import com.leyou.common.utils.CookieUtils;
-import com.leyou.user.pojo.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,7 +64,6 @@ public class AuthController {
             //写回token
             CookieUtils.newBuilder(response).httpOnly().request(request)
                     .build(cookieName, newToken);
-
 
 
             //一登录，返回用户信息

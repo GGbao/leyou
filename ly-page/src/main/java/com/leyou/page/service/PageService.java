@@ -1,5 +1,6 @@
 package com.leyou.page.service;
 
+import com.leyou.common.utils.ThreadUtils;
 import com.leyou.item.pojo.*;
 import com.leyou.page.client.BrandClient;
 import com.leyou.page.client.CategoryClient;
@@ -62,6 +63,7 @@ public class PageService {
         context.setVariables(loadModel(spuId));
 
         //输出流
+        // TODO: 2019/10/30 0030 暂时存放在本地，之后部署在服务器
         File dest = new File("/Users/Administrator/IdeaProjects/leyou/upload", spuId + ".html");
         PrintWriter writer = null;
         if (dest.exists()) {
@@ -75,6 +77,19 @@ public class PageService {
             log.error("[静态页服务] 生成静态页异常", e);
         }
     }
+    /**
+     * 新建线程处理页面静态化
+     * @param spuId
+     */
+    /*public void asyncExcute(Long spuId) {
+        ThreadUtils.execute(()->createHtml(spuId));
+        *//*ThreadUtils.execute(new Runnable() {
+            @Override
+            public void run() {
+                createHtml(spuId);
+            }
+        });*//*
+    }*/
 
     public void deleteHtml(Long spuId) {
         File dest = new File("/Users/Administrator/IdeaProjects/leyou/upload", spuId + ".html");

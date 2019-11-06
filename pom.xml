@@ -18,6 +18,8 @@
         <module>ly-sms</module>
         <module>ly-user</module>
         <module>ly-auth</module>
+        <module>ly-cart</module>
+        <module>ly-order</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -106,14 +108,7 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+
     <repositories>
         <repository>
             <id>spring-milestones</id>

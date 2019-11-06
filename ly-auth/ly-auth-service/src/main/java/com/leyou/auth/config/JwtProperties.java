@@ -20,6 +20,9 @@ public class JwtProperties {
     private PrivateKey privateKey;//私钥
     private String cookieName;
 
+    /**
+     * @PostContruct：在构造方法执行之后执行该方法
+     */
     //对象一旦实例化后，就应该读取公钥和私钥
     @PostConstruct
     public void init() throws Exception {

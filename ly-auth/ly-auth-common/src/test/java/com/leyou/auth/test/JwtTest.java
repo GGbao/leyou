@@ -44,7 +44,7 @@ public class JwtTest {
 
     @org.junit.Test
     public void parseToken() throws Exception {
-        String token = "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MjAsInVzZXJuYW1lIjoiamFjayIsImV4cCI6MTU2NTg3MDY0OH0.CInzGq6Wf841UfBxpZjoBxgz8sfhkF_DEURb1vgevIDA8d1svM37v2Hg2tpx7Lpn6BRMz14CEsHF8FcqC9xHul8PiYeCWp-7wbAQOd_cX9AAX9-McZZhs1yhlEUnFL_ut9RDm3sEoTfNFpUdT1_JKqycEyKU7rn5NKhn0hXmdZg";
+        String token = "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MjAsInVzZXJuYW1lIjoiamFjayIsImV4cCI6MTU3MjUwODc0Nn0.VuEX01asw6xbd2rhIuq0VkKOiLorT-Vm8ao6DfjeMcJk2plIR44T1p5WqXC6gApzLti5mxyoY4dN1VpN6NYM1yUIpy1X-yB49Jm1WoHNFj0wPqJYd3ulw7G2cBzL0Vedi8Bhf2tAR4adGpybUlUQqHnRMpRLPH4Qrl2Rv3rKn8M";
         UserInfo userInfo = JwtUtils.getUserInfo(publicKey, token);
         System.out.println("id:" + userInfo.getId());
         System.out.println("name:" + userInfo.getUsername());
