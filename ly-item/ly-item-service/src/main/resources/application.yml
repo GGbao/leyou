@@ -4,7 +4,7 @@ spring:
   application:
     name: item-service
   datasource:
-    url: jdbc:mysql://localhost:3306/yun6
+    url: jdbc:mysql://192.168.1.106:3306/yun6
     username: root
     password: root
     hikari:
@@ -26,12 +26,12 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://127.0.0.1:10086/eureka
+      defaultZone: http://192.168.1.106:10086/eureka
   instance:
     #    lease-renewal-interval-in-seconds: 5 # 每隔5秒发送一次心跳
     #    lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
     prefer-ip-address: true
-    ip-address: 127.0.0.1
+    ip-address: 192.168.1.106
 #    instance-id: ${spring.application.name}:${server.port}
 mybatis:
   configuration:

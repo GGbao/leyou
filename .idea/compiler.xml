@@ -15,19 +15,24 @@
         <module name="ly-order" />
         <module name="ly-item-interface" />
         <module name="ly-user-interface" />
+        <module name="admin-server" />
         <module name="ly-common" />
         <module name="ly-cart" />
         <module name="ly-search" />
         <module name="ly-gateway" />
         <module name="ly-page" />
+        <module name="ly-seckill" />
         <module name="ly-item-service" />
         <module name="ly-sms" />
+        <module name="admin-client" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8" />
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="admin-client" options="-parameters" />
+      <module name="admin-server" options="-parameters" />
       <module name="leyou" options="-parameters" />
       <module name="ly-auth" options="-parameters" />
       <module name="ly-auth-common" options="-parameters" />
@@ -42,6 +47,7 @@
       <module name="ly-page" options="-parameters" />
       <module name="ly-registry" options="-parameters" />
       <module name="ly-search" options="-parameters" />
+      <module name="ly-seckill" options="-parameters" />
       <module name="ly-sms" options="-parameters" />
       <module name="ly-upload" options="-parameters" />
       <module name="ly-user" options="-parameters" />

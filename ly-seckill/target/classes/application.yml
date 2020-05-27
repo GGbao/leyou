@@ -1,0 +1,59 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: seckill-service
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/yun6?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: 192.168.126.201:9300
+  redis:
+    host: 192.168.126.201
+  rabbitmq:
+    host: 192.168.126.201
+    username: leyou
+    password: leyou
+    virtual-host: /leyou
+  jackson:
+    default-property-inclusion: non_null # 配置json处理时忽略空值
+  resources:
+    add-mappings: true
+    chain:
+      enabled: true
+      gzipped: true
+      html-application-cache: true
+    cache:
+      period: 3600m
+#logging:
+#  level:
+#    com.leyou.seckill.mapper.*: debug
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+    registry-fetch-interval-seconds: 5
+  instance:
+    lease-renewal-interval-in-seconds: 5 # 每隔5秒发送一次心跳
+    lease-expiration-duration-in-seconds: 10 # 10秒不发送就过期
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port}
+ly:
+  jwt:
+    pubKeyPath: C:\\tmp\\rsa\\rsa.pub # 公钥地址
+    cookieName: LY_TOKEN
+  worker:
+    workerId: 1
+    datacenterId: 1
+  pay:
+    appID: wx8397f8696b538317  #公众账号ID
+    mchID: 1473426802   #微信支付分配的商户号
+    key: T6m9iK73b0kn9g5v426MKfHQH7X8rKwb  #密钥
+    httpConnectTimeoutMs: 1000
+    httpReadTimeoutMs: 8000
+    notifyUrl: http://pay.pinyougou.com/WeChatPayNotify

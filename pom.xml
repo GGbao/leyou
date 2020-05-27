@@ -20,6 +20,10 @@
         <module>ly-auth</module>
         <module>ly-cart</module>
         <module>ly-order</module>
+        <module>admin-server</module>
+        <module>admin-client</module>
+        <module>ly-seckill</module>
+        <module>ly-seckill</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -119,5 +123,6 @@
             </snapshots>
         </repository>
     </repositories>
+
 
 </project>
