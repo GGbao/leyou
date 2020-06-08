@@ -42,7 +42,8 @@ public class MultiThreadingCreateOrder {
      * 注解：@Async
      */
     @Async
-    public void createOrder(){
+    public void
+    createOrder(){
         try {
             System.out.println("----准备@Async执行----");
             Thread.sleep(10000);
@@ -67,7 +68,7 @@ public class MultiThreadingCreateOrder {
             //查询商品详情
             SeckillGoods goods = (SeckillGoods) redisTemplate.boundHashOps("SeckillGoods_"+time).get(id);
 
-            Thread.sleep(10000);
+            Thread.sleep(3000);
             System.out.println(username+":"+Thread.currentThread().getId()+"----查询到 的商品库存："+goods.getStockCount());
             if(goods!=null && goods.getStockCount()>0){
                 //创建订单
@@ -144,7 +145,7 @@ public class MultiThreadingCreateOrder {
                     }
                 }*/
                 message -> {
-                    message.getMessageProperties().setExpiration("10000");
+                    message.getMessageProperties().setExpiration("30000");
                     return message;
                 }
                 );

@@ -35,7 +35,7 @@ public class PayController {
      *
      * @return
      */
-    @GetMapping("/createNative")
+    @RequestMapping("/createNative")
     public Map createNative(String orderId) {
         UserInfo user = UserInterceptor.getUser();
         log.info("用户名："+user.getUsername());

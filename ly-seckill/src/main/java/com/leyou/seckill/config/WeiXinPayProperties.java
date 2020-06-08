@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
-@ConfigurationProperties(prefix = "ly.pay")
+//@ConfigurationProperties(prefix = "ly.pay")
 public class WeiXinPayProperties {
     private String appid;
 

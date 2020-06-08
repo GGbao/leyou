@@ -43,7 +43,6 @@ public class SeckillOrderController {
         if(username.equals(null)){
             return new Result(403,"用户未登录！");
         }
-
         try {
             //调用Service查询
             SeckillStatus seckillStatus = seckillOrderService.queryStatus(username);

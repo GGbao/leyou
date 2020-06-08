@@ -25,7 +25,7 @@ import java.util.Map;
  * @Description:
  *****/
 @Slf4j
-//@Component
+@Component
 public class OrderMessageListener {
 
     @Autowired
@@ -72,6 +72,7 @@ public class OrderMessageListener {
             log.info("订单ID:"+seckillStatus.getOrderId().toString());
             //1.关闭微信支付
             Map<String, String> map = weixinPayService.closePay(seckillStatus.getOrderId().toString());
+
 
             if (map.get("return_code").equals("SUCCESS") && map.get("result_code").equals("SUCCESS")) {
                 //2.删除用户订单
